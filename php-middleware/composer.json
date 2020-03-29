@@ -1,0 +1,21 @@
+{
+  "name": "syfxlin/middleware-demo",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "syfxlin",
+      "email": "syfxlin@gmail.com"
+    }
+  ],
+  "require": {
+    "psr/http-server-middleware": "^1.0",
+    "laminas/laminas-diactoros": "^2.2",
+    "laminas/laminas-httphandlerrunner": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Middleware\\": "middleware/"
+    }
+  }
+}
