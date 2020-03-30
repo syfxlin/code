@@ -1,0 +1,18 @@
+{
+  "name": "syfxlin/design-pattern-facade",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "syfxlin",
+      "email": "syfxlin@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Utils\\": "Utils/",
+      "Facades\\": "Facades/"
+    }
+  }
+}
