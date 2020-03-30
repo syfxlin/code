@@ -7,26 +7,35 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class Runner implements RequestHandlerInterface
 {
-    public $middleware;
-    public $next;
-    public function __construct($middleware, $next)
+    public $middlewares;
+
+    public function __construct($middlewares)
     {
-        $this->middleware = $middleware;
-        $this->next = $next;
+        $this->middlewares = array_map(function ($middleware) {
+            if (is_string($middleware)) {
+                return new $middleware;
+            } else {
+                return $middleware;
+            }
+        }, $middlewares);
     }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $next = $this->next;
-        $middleware = $this->middleware;
+        $middleware = array_shift($this->middlewares);
         if (is_callable($middleware)) {
-            return $middleware($request, $next);
+            return $middleware($request, $this);
         }
-        $middleware = new $middleware;
         if ($middleware instanceof MiddlewareInterface) {
-            return $middleware->process($request, $next);
+            return $middleware->process($request, $this);
         }
         if ($middleware instanceof RequestHandlerInterface) {
-            return $middleware->handle($request, $next);
+            return $middleware->handle($request);
         }
+    }
+
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->handle($request);
     }
 }
