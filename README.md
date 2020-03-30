@@ -57,3 +57,12 @@
 ## 其他
 
 - [PHP 中间件](https://github.com/syfxlin/blog-code/tree/master/php-middleware) `PSR-15, Pipeline` - [博客文章](https://blog.ixk.me/middleware-implementation-with-php.html)
+- [React Store](https://github.com/syfxlin/blog-code/tree/master/react-store) `TypeScript`
+- [Vue Store](https://github.com/syfxlin/blog-code/tree/master/vue-store) `JavaScript`
+
+## 一些乱七八糟的文件
+
+- [IDEA Atom One Dark Pro 配色文件](https://github.com/syfxlin/blog-code/tree/master/other/Atom-One-Dark-Pro.icls)
+- [PowerShell Profile 配置文件](https://github.com/syfxlin/blog-code/tree/master/other/posh-profile.ps1)
+- [PowerShell 设置代理脚本](https://github.com/syfxlin/blog-code/tree/master/other/posh-proxy.ps1)
+- [Windows Terminal 配置文件](https://github.com/syfxlin/blog-code/tree/master/other/windows-terminal-profile.json)
