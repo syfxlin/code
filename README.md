@@ -54,6 +54,9 @@
 - [建造者模式](https://github.com/syfxlin/code/tree/master/design-pattern/Builder) `Builder`
 - [门面模式](https://github.com/syfxlin/code/tree/master/design-pattern/Facade) `Facade`
 - [观察者模式](https://github.com/syfxlin/code/tree/master/design-pattern/Observer) `Observer`
+- [适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter) `Adapter`
+  - [类的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter/ClassAdapter.php)
+  - [对象的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter/ObjectAdapter.php)
 
 ## 其他
 
