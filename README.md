@@ -53,6 +53,7 @@
   - [工厂方法模式](https://github.com/syfxlin/code/blob/master/design-pattern/Factory/FactoryMethod.php) `FactoryMethod`
 - [建造者模式](https://github.com/syfxlin/code/tree/master/design-pattern/Builder) `Builder`
 - [门面模式](https://github.com/syfxlin/code/tree/master/design-pattern/Facade) `Facade`
+- [观察者模式](https://github.com/syfxlin/code/tree/master/design-pattern/Observer) `Observer`
 
 ## 其他
 
