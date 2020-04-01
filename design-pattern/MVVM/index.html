@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1 x-text="titleText"></h1>
+      <h2 x-html="titleHtml"></h2>
+      <input x-model="inputModel" />
+      <textarea x-model="textareaModel" cols="5" rows="5"></textarea>
+      <option x-model="selectModel">
+        <option value="true">true</option>
+        <option value="false"></option>
+      </select>
+      <img x-bind="src:imgBind" />
+      <ul x-for="item in ulFor">
+        <li>
+          <p x-class="item.class" x-text="item.value"></p>
+        </li>
+      </ul>
+    </div>
+    <script src="vm.js"></script>
+  </body>
+</html>
