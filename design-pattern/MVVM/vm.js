@@ -251,7 +251,7 @@ class Compile {
   constructor(el, vm) {
     this.el = el;
     this.vm = vm;
-    this.types = ["text", "html", "model", "bind", "class", "id"];
+    this.types = ["text", "html", "model", "bind", "class", "id", "show", "if"];
   }
 
   compile() {
@@ -401,6 +401,48 @@ class Compile {
   }
 
   /**
+   * 编译 Show
+   *
+   * @param   {Element}  node
+   * @param   {string}   before
+   *
+   * @return  {void}
+   */
+  compileShow(node, before = "") {
+    node.style.display = new Watcher(
+      before + node.getAttribute("x-show"),
+      value => {
+        node.style.display = value ? "" : "none";
+      },
+      this.vm
+    ).value
+      ? ""
+      : "none";
+  }
+
+  /**
+   * 编译 If
+   *
+   * @param   {Element}  node
+   * @param   {string}   before
+   *
+   * @return  {void}
+   */
+  compileIf(node, before = "") {
+    let [key, target] = node.getAttribute("x-if").split(/\s+={2,3}\s+/);
+    node.style.display =
+      new Watcher(
+        before + key,
+        value => {
+          node.style.display = value == target ? "" : "none";
+        },
+        this.vm
+      ).value == target
+        ? ""
+        : "none";
+  }
+
+  /**
    * 编译 For
    *
    * @param    {Element}  node
@@ -462,6 +504,8 @@ let vm = new Vm({
         class: "class-2",
         value: 2
       }
-    ]
+    ],
+    divShow: true,
+    btnIf: 1
   }
 });
