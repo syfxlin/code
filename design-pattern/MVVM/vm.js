@@ -36,12 +36,15 @@ class Vm {
         data[key] = _this.observable(data[key]);
       }
       // 创建该数据的消息分发器
-      let dispatcher = new Dispatcher();
+      let dispatcher = new Dispatcher(_this);
       return new Proxy(data, {
         get(obj, prop) {
           // 一个临时指向 watcher 的指针，当有新的 watcher 创建时，会首次获取绑定数据，此时就会将 watcher 绑定到 dispatcher
           if (Dispatcher.target) {
-            dispatcher.bind();
+            dispatcher.bind(prop);
+          }
+          if (Dispatcher.targetFor) {
+            dispatcher.bindFor();
           }
           return obj[prop];
         },
@@ -50,6 +53,10 @@ class Vm {
             obj[prop] = _this.observable(value);
             // 通知数据更新
             dispatcher.notify();
+          }
+          // Hook length 属性以监听数组的增加
+          if (prop === "length" && dispatcher.for) {
+            dispatcher.notifyFor();
           }
           return true;
         },
@@ -165,6 +172,7 @@ class Watcher {
 class Dispatcher {
   // 一个临时指向 watcher 的指针，当有新的 watcher 创建时，会首次获取绑定数据，此时就会将 watcher 绑定到 dispatcher
   static target = null;
+  static targetFor = null;
 
   /**
    * 构造器
@@ -174,8 +182,9 @@ class Dispatcher {
    * @return  {Dispatcher}
    */
   constructor(vm) {
-    this.watchers = [];
+    this.watchers = {};
     this.vm = vm;
+    this.for = null;
   }
 
   /**
@@ -185,8 +194,8 @@ class Dispatcher {
    *
    * @return  {void}
    */
-  add(watcher) {
-    this.watchers.push(watcher);
+  add(key, watcher) {
+    this.watchers[key] = watcher;
   }
 
   /**
@@ -196,11 +205,8 @@ class Dispatcher {
    *
    * @return  {void}
    */
-  remove(watcher) {
-    let index = this.watchers.indexOf(watcher);
-    if (index != -1) {
-      this.watchers.splice(index, 1);
-    }
+  remove(key) {
+    delete this.watchers[key];
   }
 
   /**
@@ -212,7 +218,7 @@ class Dispatcher {
    * @return  {void}
    */
   notify() {
-    this.watchers.forEach(watcher => watcher.update());
+    Object.values(this.watchers).forEach(watcher => watcher.update());
   }
 
   /**
@@ -220,8 +226,16 @@ class Dispatcher {
    *
    * @return  {void}
    */
-  bind() {
-    this.add(Dispatcher.target);
+  bind(key) {
+    this.add(key, Dispatcher.target);
+  }
+
+  bindFor() {
+    this.for = Dispatcher.targetFor;
+  }
+
+  notifyFor() {
+    this.for.update();
   }
 }
 
@@ -241,10 +255,11 @@ class Compile {
   }
 
   compile() {
-    document
-      .querySelectorAll(":not([x-for])")
-      .forEach(item => this.compileItem(item));
-    document.querySelectorAll("[x-for]").forEach(item => {
+    // this.el
+    //   .querySelectorAll(":not([x-for])")
+    //   .forEach(item => this.compileItem(item));
+    this.compileItem(this.el);
+    this.el.querySelectorAll("[x-for]").forEach(item => {
       this.compileFor(item);
     });
   }
@@ -404,22 +419,28 @@ class Compile {
     });
     // 拷贝
     let copy = node.cloneNode(true);
-    node.innerHTML = "";
-    let list = new Watcher(
+    let renderList = (list, watcher) => {
+      Dispatcher.targetFor = watcher;
+      node.innerHTML = "";
+      let nodes = [];
+      for (const k in list) {
+        nodes[k] = copy.cloneNode(true);
+        this.compileItem(nodes[k], key + "." + k + ".");
+      }
+      for (const n of nodes) {
+        node.append(...n.children);
+      }
+      Dispatcher.targetFor = null;
+    };
+    let watcher = new Watcher(
       key,
-      function(value) {
-        console.log(value);
+      value => {
+        renderList(value, watcher);
       },
       this.vm
-    ).value;
-    let nodes = [];
-    for (const k in list) {
-      nodes[k] = copy.cloneNode(true);
-      this.compileItem(nodes[k], key + "." + k + ".");
-    }
-    for (const n of nodes) {
-      node.append(...n.children);
-    }
+    );
+    let list = watcher.value;
+    renderList(list, watcher);
   }
 }
 
