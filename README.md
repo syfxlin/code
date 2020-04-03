@@ -58,6 +58,7 @@
   - [类的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter/ClassAdapter.php)
   - [对象的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter/ObjectAdapter.php)
 - [依赖注入](https://github.com/syfxlin/code/tree/master/design-pattern/DI) `DI`
+- [控制反转](https://github.com/syfxlin/code/tree/master/design-pattern/IoC) `IoC`
 
 ## 其他
 
