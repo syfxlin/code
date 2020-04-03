@@ -1,5 +1,11 @@
 <?php
-class Container
+
+use Psr\Container\ContainerInterface;
+
+/**
+ * IoC 容器，兼容 PSR-11
+ */
+class Container implements ContainerInterface
 {
     /**
      * 容器中存储依赖的数组
@@ -10,6 +16,13 @@ class Container
     protected $bindings = [];
 
     /**
+     * 已创建的单例实例
+     *
+     * @var array
+     */
+    protected $instances = [];
+
+    /**
      * 绑定依赖
      *
      * @param   string|array  $abstract  依赖名或者依赖列表
@@ -17,16 +30,23 @@ class Container
      *
      * @return  Container
      */
-    public function bind($abstract, $concrete = null): Container
+    public function bind($abstract, $concrete = null, $shared = false): Container
     {
         // 同时绑定多个依赖
         if (is_array($abstract)) {
-            foreach ($abstract as $key => $value) {
-                if (is_int($key)) {
-                    $this->setBind($value, $value);
-                } else {
-                    $this->setBind($key, $value);
+            foreach ($abstract as $_abstract => $value) {
+                if (is_int($_abstract)) {
+                    $_abstract = $value;
                 }
+                $_concrete = $_abstract;
+                $_shared = false;
+                if (is_bool($value)) {
+                    $_shared = $value;
+                } else if (is_array($value)) {
+                    $_concrete = $value[0];
+                    $_shared = $value[1];
+                }
+                $this->setBinding($_abstract, $_concrete, $_shared);
             }
             return $this;
         }
@@ -34,12 +54,13 @@ class Container
         if (is_null($concrete)) {
             $concrete = $abstract;
         }
-        $this->setBind($abstract, $concrete);
+        $this->setBinding($abstract, $concrete, $shared);
         // 返回 this 使其支持链式调用
         return $this;
     }
 
-    protected function setBind($abstract, $concrete)
+    // 设置 binding
+    protected function setBinding(string $abstract, $concrete, bool $shared = false)
     {
         // 传入的默认是闭包，如果没有传入闭包则默认创建
         if (!$concrete instanceof Closure) {
@@ -47,8 +68,27 @@ class Container
                 return $c->build($concrete);
             };
         }
+        // 判断是否是单例，是否被设置过
+        if ($shared && isset($this->bindings[$abstract])) {
+            throw new RuntimeException("Target [$abstract] is a singleton and has been bind");
+        }
         // 设置绑定的闭包
-        $this->bindings[$abstract] = $concrete;
+        $this->bindings[$abstract] = compact('concrete', 'shared');
+    }
+
+    // 获取 binding
+    protected function getBinding(string $abstract)
+    {
+        if (!isset($this->bindings[$abstract])) {
+            throw new RuntimeException("Target [$abstract] is not binding");
+        }
+        return $this->bindings[$abstract];
+    }
+
+    // 判断 binding 是否存在
+    protected function hasBinding(string $abstract): bool
+    {
+        return isset($this->bindings[$abstract]);
     }
 
     /**
@@ -60,14 +100,64 @@ class Container
      */
     public function make(string $abstract)
     {
-        // 当依赖没有 binding 到容器时抛出异常
-        if (!isset($this->bindings[$abstract])) {
-            throw new RuntimeException("Target [$abstract] is not binding");
+        $binding = $this->getBinding($abstract);
+        $concrete = $binding['concrete'];
+        $shared = $binding['shared'];
+        // 判断是否是单例，若是单例并且已经实例化过就直接返回实例
+        if ($shared && isset($this->instances[$abstract])) {
+            return $this->instances[$abstract];
         }
-        $concrete = $this->bindings[$abstract];
-        return $concrete($this);
+        // 构建实例
+        $instance = $concrete($this);
+        // 判断是否是单例，若是则设置到容器的单例列表中
+        if ($shared) {
+            $this->instances[$abstract] = $instance;
+        }
+        return $instance;
     }
 
+    /**
+     * 绑定单例
+     *
+     * @param   string     $abstract  依赖名称
+     * @param   mixed      $concrete  依赖闭包
+     *
+     * @return  Container
+     */
+    public function singleton(string $abstract, $concrete = null): Container
+    {
+        $this->bind($abstract, $concrete, true);
+        return $this;
+    }
+
+    /**
+     * 绑定已实例化的单例
+     *
+     * @param   string     $abstract  依赖名称
+     * @param   mixed      $instance  已实例化的单例
+     *
+     * @return  Container
+     */
+    public function instance(string $abstract, $instance): Container
+    {
+        $this->instances[$abstract] = $instance;
+        $this->bindings[$abstract] = [
+            // 直接返回单例
+            'concrete' => function () use ($instance) {
+                return $instance;
+            },
+            'shared' => true
+        ];
+        return $this;
+    }
+
+    /**
+     * 构建实例
+     *
+     * @param   Closure|string  $class  类名或者闭包
+     *
+     * @return  mixed
+     */
     public function build($class)
     {
         if ($class instanceof Closure) {
@@ -125,8 +215,20 @@ class Container
      *
      * @return  bool
      */
-    public function has(string $abstract): bool
+    public function has($id)
     {
-        return isset($this->bindings[$abstract]);
+        return $this->hasBinding($id);
+    }
+
+    /**
+     * 同 make
+     *
+     * @param   string  $id  对象名称
+     *
+     * @return  mixed
+     */
+    public function get($id)
+    {
+        return $this->make($id);
     }
 }

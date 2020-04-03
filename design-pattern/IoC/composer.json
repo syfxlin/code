@@ -1,0 +1,14 @@
+{
+    "name": "syfxlin/design-pattern-ioc",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "syfxlin",
+            "email": "syfxlin@gmail.com"
+        }
+    ],
+    "require": {
+        "psr/container": "^1.0"
+    }
+}
