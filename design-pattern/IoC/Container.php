@@ -23,6 +23,13 @@ class Container implements ContainerInterface
     protected $instances = [];
 
     /**
+     * 自动通过类名绑定类
+     *
+     * @var bool
+     */
+    protected $autobind = true;
+
+    /**
      * 绑定依赖
      *
      * @param   string|array  $abstract  依赖名或者依赖列表
@@ -80,7 +87,12 @@ class Container implements ContainerInterface
     protected function getBinding(string $abstract)
     {
         if (!isset($this->bindings[$abstract])) {
-            throw new RuntimeException("Target [$abstract] is not binding");
+            // 尝试自动绑定
+            if ($this->autobind && class_exists($abstract)) {
+                $this->setBinding($abstract, $abstract);
+            } else {
+                throw new RuntimeException("Target [$abstract] is not binding or fail autobind");
+            }
         }
         return $this->bindings[$abstract];
     }
@@ -206,6 +218,18 @@ class Container implements ContainerInterface
             }
         }
         return $dependency;
+    }
+
+    /**
+     * 设置自动绑定
+     *
+     * @param   bool  $use  是否自动绑定类
+     *
+     * @return  void
+     */
+    public function useAutoBind(bool $use): void
+    {
+        $this->autobind = $use;
     }
 
     /**

@@ -4,43 +4,11 @@
  * IoC 控制反转
  */
 require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/Animal.php";
 require_once __DIR__ . "/Container.php";
 
-interface Animal
-{
-    public function getName(): string;
-    public function setName($name);
-}
-
-class Cat implements Animal
-{
-    public $name = "猫";
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-}
-
-class Dog implements Animal
-{
-    public $name = "狗";
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-}
+use Animal\Dog;
+use Animal\Cat;
 
 class PetShop1
 {
@@ -58,7 +26,7 @@ class PetShop1
      *
      * @return  PetShop1
      */
-    public function __construct(Dog $animal)
+    public function __construct(\Animal\Dog $animal)
     {
         $this->animal = $animal;
     }
@@ -96,6 +64,9 @@ class PetShop2
     }
 }
 
+/**
+ * 测试
+ */
 $container = new Container();
 $container->bind([
     Dog::class,
@@ -104,12 +75,12 @@ $container->bind([
 $container->bind(PetShop1::class);
 $container->bind(PetShop2::class, PetShop2::class);
 
-$container->make(PetShop1::class)->printName();
-$container->make(PetShop2::class)->printName();
+$container->make(PetShop1::class)->printName(); // 狗
+$container->make(PetShop2::class)->printName(); // 猫
 
-// 狗
-// 猫
-
+/**
+ * 单例
+ */
 $c = new Container();
 $c->bind([
     Dog::class => [Dog::class, true]
@@ -124,8 +95,25 @@ $i2 = $c->make(PetShop1::class);
 $i1->animal->setName("大狗");
 $i2->animal->setName("小狗");
 
-$i1->printName();
-$i2->printName();
+$i1->printName(); // 小狗
+$i2->printName(); // 小狗
 
-// 小狗
-// 小狗
+/**
+ * 自动载入类
+ * 默认开启了自动载入，只需传入正确的类名，无需绑定依赖
+ */
+$c2 = new Container();
+$c2->make(PetShop1::class)->printName(); // 狗
+
+// 自动载入若开启，在未找到绑定的依赖时会尝试加载类
+// 若找到了类名则进行自动绑定，后续即使关闭了自动绑定也可以使用已经自动绑定过的类
+// 如该例自动绑定了 PetShop1 类和 Dog 类，关闭了也可以使用已经绑定过的类
+$c2->useAutoBind(false);
+$c2->make(PetShop1::class)->printName(); // 狗
+
+// 关闭了自动绑定后如果使用未绑定的类就会触发异常
+try {
+    $c2->make(PetShop2::class)->printName();
+} catch (Exception $e) {
+    echo $e->getMessage(); // Target [PetShop2] is not binding or fail autobind
+}
