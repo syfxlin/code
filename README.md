@@ -59,6 +59,7 @@
   - [对象的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter/ObjectAdapter.php)
 - [依赖注入](https://github.com/syfxlin/code/tree/master/design-pattern/DI) `DI`
 - [控制反转](https://github.com/syfxlin/code/tree/master/design-pattern/IoC) `IoC, PSR-11`
+- [管道设计](https://github.com/syfxlin/code/tree/master/design-pattern/Pipeline) `Pipeline`
 
 ## 其他
 
