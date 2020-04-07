@@ -12,7 +12,7 @@ class Middleware2 implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         echo "Start Middleware2\n";
-        $response = $handler->handle($request);
+        $response = $handler($request);
         echo "End Middleware2\n";
         return $response;
     }

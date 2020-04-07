@@ -20,6 +20,7 @@ $app = function ($request) {
 // 函数中间件
 $middlewares[] = function ($request, $next) {
     echo "Callable\n";
+    // 默认的方式
     return $next->handle($request);
 };
 
@@ -27,12 +28,13 @@ $middlewares[] = function ($request, $next) {
 $text = "Closure\n";
 $middlewares[] = function ($request, $next) use ($text) {
     echo $text;
-    return $next->handle($request);
+    // 因为添加了 __invoke 所以也可以像 Laravel 闭包中间件一样直接调用
+    return $next($request);
 };
 
 $runner = new Runner(array_merge($middlewares, [$app]));
 
-$reponse = $runner->handle($request);
+$reponse = $runner($request);
 
 // 由于前面使用了echo，所以使用echo代替了emit
 echo $reponse->getBody();
