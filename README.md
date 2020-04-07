@@ -61,6 +61,7 @@
 - [控制反转](https://github.com/syfxlin/code/tree/master/design-pattern/IoC) `IoC, PSR-11`
 - [管道设计](https://github.com/syfxlin/code/tree/master/design-pattern/Pipeline) `Pipeline`
 - [装饰模式](https://github.com/syfxlin/code/tree/master/design-pattern/Decorator) `Decorator`
+- [代理模式](https://github.com/syfxlin/code/tree/master/design-pattern/Proxy) `Proxy`
 
 ## 其他
 
