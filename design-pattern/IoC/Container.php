@@ -1,6 +1,9 @@
 <?php
 
+use Closure;
 use Psr\Container\ContainerInterface;
+use ReflectionClass;
+use RuntimeException;
 
 /**
  * IoC 容器，兼容 PSR-11
@@ -71,8 +74,8 @@ class Container implements ContainerInterface
     {
         // 传入的默认是闭包，如果没有传入闭包则默认创建
         if (!$concrete instanceof Closure) {
-            $concrete = function ($c) use ($concrete) {
-                return $c->build($concrete);
+            $concrete = function ($c, $args = []) use ($concrete) {
+                return $c->build($concrete, $args);
             };
         }
         // 判断是否是单例，是否被设置过
@@ -110,7 +113,7 @@ class Container implements ContainerInterface
      *
      * @return  mixed
      */
-    public function make(string $abstract)
+    public function make(string $abstract, $args = [])
     {
         $binding = $this->getBinding($abstract);
         $concrete = $binding['concrete'];
@@ -120,7 +123,7 @@ class Container implements ContainerInterface
             return $this->instances[$abstract];
         }
         // 构建实例
-        $instance = $concrete($this);
+        $instance = $concrete($this, $args);
         // 判断是否是单例，若是则设置到容器的单例列表中
         if ($shared) {
             $this->instances[$abstract] = $instance;
@@ -170,10 +173,10 @@ class Container implements ContainerInterface
      *
      * @return  mixed
      */
-    public function build($class)
+    public function build($class, $args = [])
     {
         if ($class instanceof Closure) {
-            return $class($this);
+            return $class($this, $args);
         }
         // 取得反射类
         $reflector = new ReflectionClass($class);
@@ -192,7 +195,7 @@ class Container implements ContainerInterface
         // 取得构造方法中的参数数组
         $parameters = $constructor->getParameters();
         // 返回已注入依赖的参数数组
-        $dependency = $this->injectingDependencies($parameters);
+        $dependency = $this->injectingDependencies($parameters, $args);
         // 利用注入后的参数创建实例
         return $reflector->newInstanceArgs($dependency);
     }
@@ -204,10 +207,14 @@ class Container implements ContainerInterface
      *
      * @return  array
      */
-    protected function injectingDependencies(array $parameters): array
+    protected function injectingDependencies(array $parameters, array $args = []): array
     {
         $dependency = [];
         foreach ($parameters as $parameter) {
+            if (isset($args[$parameter])) {
+                $dependency[] = $args[$parameter];
+                continue;
+            }
             // 利用参数的类型声明，获取到参数的类型，然后从 bindings 中获取依赖注入
             $dependencyClass = $parameter->getClass();
             if (is_null($dependencyClass)) {
