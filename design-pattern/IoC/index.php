@@ -53,7 +53,7 @@ class PetShop2
      *
      * @return  PetShop2
      */
-    public function __construct(Cat $animal)
+    public function __construct(Cat $animal, $type = "0")
     {
         $this->animal = $animal;
     }
@@ -76,6 +76,7 @@ $container->bind(PetShop1::class);
 $container->bind(PetShop2::class, PetShop2::class);
 
 $container->make(PetShop1::class)->printName(); // 狗
+$container->bind('$type', '2');
 $container->make(PetShop2::class)->printName(); // 猫
 
 /**
@@ -115,5 +116,29 @@ $c2->make(PetShop1::class)->printName(); // 狗
 try {
     $c2->make(PetShop2::class)->printName();
 } catch (Exception $e) {
-    echo $e->getMessage(); // Target [PetShop2] is not binding or fail autobind
+    echo $e->getMessage() . "\n"; // Target [PetShop2] is not binding or fail autobind
 }
+
+$c3 = new Container();
+$c3->call(function (Cat $cat) {
+    echo $cat->getName() . "\n";
+});
+$c3->bindMethod('printName', function (Cat $cat) {
+    echo $cat->getName() . "\n";
+});
+echo $c3->call('Animal\Cat@getName') . "\n";
+
+class StaticClass
+{
+    public static function staticMethod(string $str)
+    {
+        echo "This is static method [$str]\n";
+    }
+}
+
+$c3->call('StaticClass::staticMethod', [
+    'str' => 'This is string'
+]);
+
+$c3->bind(Cat::class, null, false, 'cat');
+echo $c3->make('cat')->getName();
