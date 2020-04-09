@@ -62,6 +62,7 @@
 - [管道设计](https://github.com/syfxlin/code/tree/master/design-pattern/Pipeline) `Pipeline`
 - [装饰模式](https://github.com/syfxlin/code/tree/master/design-pattern/Decorator) `Decorator`
 - [代理模式](https://github.com/syfxlin/code/tree/master/design-pattern/Proxy) `Proxy`
+- [组合模式](https://github.com/syfxlin/code/tree/master/design-pattern/Composite) `Composite`
 
 ## 其他
 
