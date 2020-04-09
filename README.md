@@ -63,6 +63,7 @@
 - [装饰模式](https://github.com/syfxlin/code/tree/master/design-pattern/Decorator) `Decorator`
 - [代理模式](https://github.com/syfxlin/code/tree/master/design-pattern/Proxy) `Proxy`
 - [组合模式](https://github.com/syfxlin/code/tree/master/design-pattern/Composite) `Composite`
+- [迭代器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Iterator) `Iterator`
 
 ## 其他
 
