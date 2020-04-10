@@ -46,13 +46,19 @@ class Container implements ContainerInterface
     /**
      * 绑定依赖
      *
-     * @param   string|array  $abstract  依赖名或者依赖列表
-     * @param   Closure|string|null  $concrete  依赖闭包
+     * @param string|array $abstract 依赖名或者依赖列表
+     * @param Closure|string|null $concrete 依赖闭包
      *
+     * @param bool $shared
+     * @param bool|string $alias
      * @return  Container
      */
-    public function bind($abstract, $concrete = null, $shared = false, $alias = false): Container
-    {
+    public function bind(
+        $abstract,
+        $concrete = null,
+        bool $shared = false,
+        $alias = false
+    ): Container {
         // 同时绑定多个依赖
         if (is_array($abstract)) {
             foreach ($abstract as $_abstract => $value) {
@@ -64,9 +70,8 @@ class Container implements ContainerInterface
                 $_shared = false;
                 if (is_bool($value)) {
                     $_shared = $value;
-                } else if (is_array($value)) {
-                    $_concrete = $value[0];
-                    $_shared = $value[1];
+                } elseif (is_array($value)) {
+                    [$_concrete, $_shared] = $value;
                 }
                 $this->setBinding($_abstract, $_concrete, $_shared);
             }
@@ -74,7 +79,7 @@ class Container implements ContainerInterface
         }
         $abstract = $this->getAbstract($abstract);
         // 为了方便绑定依赖，可以节省一个参数
-        if (is_null($concrete)) {
+        if ($concrete === null) {
             $concrete = $abstract;
         }
         $this->setBinding($abstract, $concrete, $shared);
@@ -86,18 +91,25 @@ class Container implements ContainerInterface
     }
 
     // 设置 binding
-    protected function setBinding(string $abstract, $concrete, bool $shared = false)
-    {
+    protected function setBinding(
+        string $abstract,
+        $concrete,
+        bool $shared = false
+    ): void {
         $abstract = $this->getAbstract($abstract);
         // 传入的默认是闭包，如果没有传入闭包则默认创建
         if (!$concrete instanceof Closure) {
-            $concrete = function ($c, $args = []) use ($concrete) {
+            $concrete = function (Container $c, array $args = []) use (
+                $concrete
+            ) {
                 return $c->build($concrete, $args);
             };
         }
         // 判断是否是单例，是否被设置过
         if ($shared && isset($this->bindings[$abstract])) {
-            throw new RuntimeException("Target [$abstract] is a singleton and has been bind");
+            throw new RuntimeException(
+                "Target [$abstract] is a singleton and has been bind"
+            );
         }
         // 设置绑定的闭包
         $this->bindings[$abstract] = compact('concrete', 'shared');
@@ -109,10 +121,16 @@ class Container implements ContainerInterface
         $abstract = $this->getAbstract($abstract);
         if (!isset($this->bindings[$abstract])) {
             // 尝试自动绑定
-            if ($this->autobind && substr($abstract, 0, 1) !== '$' && class_exists($abstract)) {
+            if (
+                $this->autobind &&
+                $abstract[0] !== '$' &&
+                class_exists($abstract)
+            ) {
                 $this->setBinding($abstract, $abstract);
             } else {
-                throw new RuntimeException("Target [$abstract] is not binding or fail autobind");
+                throw new RuntimeException(
+                    "Target [$abstract] is not binding or fail autobind"
+                );
             }
         }
         return $this->bindings[$abstract];
@@ -128,11 +146,12 @@ class Container implements ContainerInterface
     /**
      * 实例化对象
      *
-     * @param   string  $abstract  对象名称
+     * @param string $abstract 对象名称
+     * @param array $args
      *
      * @return  mixed
      */
-    public function make(string $abstract, $args = [])
+    public function make(string $abstract, array $args = [])
     {
         $abstract = $this->getAbstract($abstract);
         $binding = $this->getBinding($abstract);
@@ -154,13 +173,17 @@ class Container implements ContainerInterface
     /**
      * 绑定单例
      *
-     * @param   string     $abstract  依赖名称
-     * @param   mixed      $concrete  依赖闭包
+     * @param string $abstract 依赖名称
+     * @param mixed $concrete 依赖闭包
+     * @param bool|string $alias
      *
      * @return  Container
      */
-    public function singleton(string $abstract, $concrete = null, $alias = false): Container
-    {
+    public function singleton(
+        string $abstract,
+        $concrete = null,
+        $alias = false
+    ): Container {
         $this->bind($abstract, $concrete, true, $alias);
         return $this;
     }
@@ -190,15 +213,18 @@ class Container implements ContainerInterface
     /**
      * 构建实例
      *
-     * @param   Closure|string  $class  类名或者闭包
-     *
+     * @param Closure|string $class 类名或者闭包
+     * @param array $args
      * @return  mixed
+     *
+     * @throws ReflectionException
      */
-    public function build($class, $args = [])
+    public function build($class, array $args = [])
     {
         if ($class instanceof Closure) {
             return $class($this, $args);
-        } else if (!class_exists($class)) {
+        }
+        if (!class_exists($class)) {
             return $class;
         }
         // 取得反射类
@@ -211,9 +237,9 @@ class Container implements ContainerInterface
         // 取得构造函数
         $constructor = $reflector->getConstructor();
         // 检查是否有构造函数
-        if (is_null($constructor)) {
+        if ($constructor === null) {
             // 如果没有，就说明没有依赖，直接实例化
-            return new $class;
+            return new $class();
         }
         // 取得构造方法中的参数数组
         $parameters = $constructor->getParameters();
@@ -226,12 +252,15 @@ class Container implements ContainerInterface
     /**
      * 注入依赖
      *
-     * @param   array  $parameters  参数列表
+     * @param array $parameters 参数列表
+     * @param array $args
      *
      * @return  array
      */
-    protected function injectingDependencies(array $parameters, array $args = []): array
-    {
+    protected function injectingDependencies(
+        array $parameters,
+        array $args = []
+    ): array {
         $dependency = [];
         foreach ($parameters as $parameter) {
             if (isset($args[$parameter->name])) {
@@ -240,7 +269,7 @@ class Container implements ContainerInterface
             }
             // 利用参数的类型声明，获取到参数的类型，然后从 bindings 中获取依赖注入
             $dependencyClass = $parameter->getClass();
-            if (is_null($dependencyClass)) {
+            if ($dependencyClass === null) {
                 $dependency[] = $this->resolvePrimitive($parameter);
             } else {
                 // 实例化依赖
@@ -253,18 +282,23 @@ class Container implements ContainerInterface
     /**
      * 处理非类的依赖
      *
-     * @param   ReflectionParameter  $parameter
+     * @param ReflectionParameter $parameter
      *
      * @return  mixed
      */
     protected function resolvePrimitive(ReflectionParameter $parameter)
     {
+        $abstract = '$' . $parameter->name;
+        // 通过变量名匹配别名
+        if ($this->isAlias($parameter->name)) {
+            $abstract = $this->getAbstract($parameter->name);
+        }
         try {
-            $concrete = $this->getBinding('$' . $parameter->name)['concrete'];
+            $concrete = $this->getBinding($abstract)['concrete'];
         } catch (RuntimeException $e) {
             $concrete = null;
         }
-        if (!is_null($concrete)) {
+        if ($concrete !== null) {
             return $concrete instanceof Closure ? $concrete($this) : $concrete;
         }
         if ($parameter->isDefaultValueAvailable()) {
@@ -276,7 +310,7 @@ class Container implements ContainerInterface
     /**
      * 处理类依赖
      *
-     * @param   ReflectionParameter  $parameter
+     * @param ReflectionParameter $parameter
      *
      * @return  mixed
      */
@@ -307,11 +341,10 @@ class Container implements ContainerInterface
     /**
      * 判断是否绑定了指定的依赖
      *
-     * @param   string  $abstract  依赖名
-     *
+     * @param $id
      * @return  bool
      */
-    public function has($id)
+    public function has($id): bool
     {
         return $this->hasBinding($id);
     }
@@ -328,12 +361,12 @@ class Container implements ContainerInterface
         return $this->make($id);
     }
 
-    public function hasMethod(string $method)
+    public function hasMethod(string $method): bool
     {
         return isset($this->methodBindings[$method]);
     }
 
-    public function bindMethod(string $method, $callback)
+    public function bindMethod(string $method, $callback): void
     {
         $this->methodBindings[$method] = $callback;
     }
@@ -348,7 +381,7 @@ class Container implements ContainerInterface
 
     public function call($method, array $args = [])
     {
-        if (is_string($method) && preg_match("/@|::/", $method) > 0) {
+        if (is_string($method) && preg_match('/@|::/', $method) > 0) {
             return $this->callClass($method, $args);
         }
         if (is_string($method)) {
@@ -371,12 +404,12 @@ class Container implements ContainerInterface
         $method = null;
         $object = null;
         $invokeObject = null;
-        if (stripos($target, '@') !== false) {
-            list($class, $method) = explode('@', $target);
+        if (strpos($target, '@') !== false) {
+            [$class, $method] = explode('@', $target);
             $object = $this->build($class);
             $invokeObject = $object;
         } else {
-            list($class, $method) = explode('::', $target);
+            [$class, $method] = explode('::', $target);
             $object = $class;
         }
         $reflector = new ReflectionMethod($object, $method);
@@ -385,12 +418,12 @@ class Container implements ContainerInterface
         return $reflector->invokeArgs($invokeObject, $dependency);
     }
 
-    public function isAlias($name)
+    public function isAlias($name): bool
     {
         return isset($this->aliases[$name]);
     }
 
-    public function alias($abstract, $alias)
+    public function alias($abstract, $alias): void
     {
         if ($abstract === $alias) {
             return;
@@ -410,13 +443,10 @@ class Container implements ContainerInterface
 
     public function getAbstract($alias)
     {
-        if (isset($this->aliases[$alias])) {
-            return $this->aliases[$alias];
-        }
-        return $alias;
+        return $this->aliases[$alias] ?? $alias;
     }
 
-    public function removeAlias($alias)
+    public function removeAlias($alias): void
     {
         unset($this->aliases[$alias]);
     }
