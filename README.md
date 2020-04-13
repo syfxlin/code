@@ -65,6 +65,7 @@
 - [组合模式](https://github.com/syfxlin/code/tree/master/design-pattern/Composite) `Composite`
 - [迭代器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Iterator) `Iterator`
 - [命令模式](https://github.com/syfxlin/code/tree/master/design-pattern/Command) `Command`
+- [策略模式](https://github.com/syfxlin/code/tree/master/design-pattern/Strategy) `Strategy`
 
 ## 其他
 
