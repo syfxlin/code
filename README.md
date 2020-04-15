@@ -66,6 +66,7 @@
 - [迭代器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Iterator) `Iterator`
 - [命令模式](https://github.com/syfxlin/code/tree/master/design-pattern/Command) `Command`
 - [策略模式](https://github.com/syfxlin/code/tree/master/design-pattern/Strategy) `Strategy`
+- [桥接模式](https://github.com/syfxlin/code/tree/master/design-pattern/Bridge) `Bridge`
 
 ## 其他
 
