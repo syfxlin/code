@@ -67,6 +67,7 @@
 - [命令模式](https://github.com/syfxlin/code/tree/master/design-pattern/Command) `Command`
 - [策略模式](https://github.com/syfxlin/code/tree/master/design-pattern/Strategy) `Strategy`
 - [桥接模式](https://github.com/syfxlin/code/tree/master/design-pattern/Bridge) `Bridge`
+- [原型模式](https://github.com/syfxlin/code/tree/master/design-pattern/Prototype) `Prototype`
 
 ## 其他
 
