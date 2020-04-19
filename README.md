@@ -68,6 +68,7 @@
 - [策略模式](https://github.com/syfxlin/code/tree/master/design-pattern/Strategy) `Strategy`
 - [桥接模式](https://github.com/syfxlin/code/tree/master/design-pattern/Bridge) `Bridge`
 - [原型模式](https://github.com/syfxlin/code/tree/master/design-pattern/Prototype) `Prototype`
+- [模板模式](https://github.com/syfxlin/code/tree/master/design-pattern/Template) `Template`
 
 ## 其他
 
