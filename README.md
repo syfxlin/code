@@ -70,6 +70,7 @@
 - [原型模式](https://github.com/syfxlin/code/tree/master/design-pattern/Prototype) `Prototype`
 - [模板模式](https://github.com/syfxlin/code/tree/master/design-pattern/Template) `Template`
 - [状态模式](https://github.com/syfxlin/code/tree/master/design-pattern/State) `State`
+- [责任链模式](https://github.com/syfxlin/code/tree/master/design-pattern/ChainOfResponsibilities) `Chain Of Responsibilities`
 
 ## 其他
 
