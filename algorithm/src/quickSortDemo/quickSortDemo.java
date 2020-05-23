@@ -1,9 +1,9 @@
 package quickSortDemo;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class quickSortDemo {
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         while (in.hasNext()) {
@@ -33,7 +33,12 @@ public class quickSortDemo {
         quickSort(0, nums.length - 1, nums, lowToHigh);
     }
 
-    public static void quickSort(int left, int right, int[] nums, boolean lowToHigh) {
+    public static void quickSort(
+        int left,
+        int right,
+        int[] nums,
+        boolean lowToHigh
+    ) {
         int l = left;
         int r = right;
         int p = nums[(left + right) / 2];
@@ -63,8 +68,7 @@ public class quickSortDemo {
     }
 
     public static void quickSortF(int top, int tail, int[] nums) {
-        if (top >= tail)
-            return;
+        if (top >= tail) return;
         int mid = nums[tail];
         int left = top, right = tail - 1;
         while (left < right) {

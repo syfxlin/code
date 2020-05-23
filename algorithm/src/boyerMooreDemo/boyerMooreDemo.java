@@ -1,6 +1,5 @@
 package boyerMooreDemo;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -28,7 +27,11 @@ public class boyerMooreDemo {
         }
     }
 
-    private static void generateGS(String find, int[] suffix, boolean[] prefix) {
+    private static void generateGS(
+        String find,
+        int[] suffix,
+        boolean[] prefix
+    ) {
         char[] b = find.toCharArray();
         for (int i = 0; i < b.length; i++) {
             suffix[i] = -1;
@@ -42,17 +45,15 @@ public class boyerMooreDemo {
                 k++;
                 suffix[k] = j + 1;
             }
-            if (j == -1)
-                prefix[k] = true;
+            if (j == -1) prefix[k] = true;
         }
     }
 
     private static int moveByGS(int i, int m, int[] suffix, boolean[] prefix) {
         int k = m - 1 - i;
-        if (suffix[k] != -1)
-            return i - suffix[k] + 1;
+        if (suffix[k] != -1) return i - suffix[k] + 1;
         for (int r = i + 2; r <= m - 1; ++r) {
-            if (prefix[m - r] == true) {
+            if (prefix[m - r]) {
                 return r;
             }
         }
@@ -83,7 +84,7 @@ public class boyerMooreDemo {
             if (i < fLen - 1) {
                 y = moveByGS(i, fLen, suffix, prefix);
             }
-            index = index + (x > y ? x : y);
+            index = index + (Math.max(x, y));
         }
         return -1;
     }

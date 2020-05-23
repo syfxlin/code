@@ -1,6 +1,5 @@
 package calculatorDemo;
 
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -10,13 +9,14 @@ import java.util.Stack;
  * calculatorDemo
  */
 public class calculatorDemo {
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         while (in.hasNext()) {
             String str = in.nextLine();
             Stack<String> fix = infixToSuffix(str);
-            for (int i = 0; i < fix.size(); i++) {
-                System.out.print(fix.get(i));
+            for (String s : fix) {
+                System.out.print(s);
             }
             System.out.println();
             System.out.println("结果为:" + (int) compute(fix));
@@ -25,51 +25,70 @@ public class calculatorDemo {
     }
 
     public static Stack<String> infixToSuffix(String s) {
-        s = s.replaceAll("\\+", "|+|").replaceAll("-", "|-|").replaceAll("*", "|*|").replaceAll("/", "|/|")
-                .replaceAll("\\(", "|(|").replaceAll("\\)", "|)|").replaceAll("\\^", "|^|").replaceAll("\\|\\|", "|");
-        s = s.replaceAll("([\\+\\-*/\\^])\\|-\\|", "$1|-");
+        s =
+            s
+                .replaceAll("\\+", "|+|")
+                .replaceAll("-", "|-|")
+                .replaceAll("\\*", "|*|")
+                .replaceAll("/", "|/|")
+                .replaceAll("\\(", "|(|")
+                .replaceAll("\\)", "|)|")
+                .replaceAll("\\^", "|^|")
+                .replaceAll("\\|\\|", "|");
+        s = s.replaceAll("([+\\-*/^])\\|-\\|", "$1|-");
         String[] arr = s.split("\\|");
-        Stack<String> stack1 = new Stack<String>();
-        Stack<String> stack2 = new Stack<String>();
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i].equals(""))
-                continue;
-            switch (arr[i].charAt(arr[i].length() - 1)) {
+        Stack<String> stack1 = new Stack<>();
+        Stack<String> stack2 = new Stack<>();
+        for (String value : arr) {
+            if (value.equals("")) continue;
+            switch (value.charAt(value.length() - 1)) {
                 case '-':
                 case '+':
-                    while (stack1.size() != 0 && stack1.peek().charAt(0) != '(') {
+                    while (
+                        stack1.size() != 0 && stack1.peek().charAt(0) != '('
+                    ) {
                         stack2.push(stack1.pop());
                     }
-                    stack1.push(arr[i]);
+                    stack1.push(value);
                     break;
                 case '*':
                 case '/':
-                    while (stack1.size() != 0 && stack1.peek().charAt(0) != '(' && stack1.peek().charAt(0) != '+'
-                            && stack1.peek().charAt(0) != '-') {
+                    while (
+                        stack1.size() != 0 &&
+                        stack1.peek().charAt(0) != '(' &&
+                        stack1.peek().charAt(0) != '+' &&
+                        stack1.peek().charAt(0) != '-'
+                    ) {
                         stack2.push(stack1.pop());
                     }
-                    stack1.push(arr[i]);
+                    stack1.push(value);
                     break;
                 case '(':
-                    stack1.push(arr[i]);
+                    stack1.push(value);
                     break;
                 case ')':
-                    while (stack1.size() != 0 && stack1.peek().charAt(0) != '(') {
+                    while (
+                        stack1.size() != 0 && stack1.peek().charAt(0) != '('
+                    ) {
                         stack2.push(stack1.pop());
                     }
                     stack1.pop();
                     break;
                 case '^':
-                    while (stack1.size() != 0 && stack1.peek().charAt(0) != '(' && stack1.peek().charAt(0) != '*'
-                            && stack1.peek().charAt(0) != '/' && stack1.peek().charAt(0) != '+'
-                            && stack1.peek().charAt(0) != '-') {
+                    while (
+                        stack1.size() != 0 &&
+                        stack1.peek().charAt(0) != '(' &&
+                        stack1.peek().charAt(0) != '*' &&
+                        stack1.peek().charAt(0) != '/' &&
+                        stack1.peek().charAt(0) != '+' &&
+                        stack1.peek().charAt(0) != '-'
+                    ) {
                         stack2.push(stack1.pop());
                     }
-                    stack1.push(arr[i]);
+                    stack1.push(value);
                     break;
-
                 default:
-                    stack2.push(arr[i]);
+                    stack2.push(value);
                     break;
             }
         }
@@ -84,12 +103,11 @@ public class calculatorDemo {
             s = s.replaceAll(split, "|");
         }
         String[] arr = s.split("\\|");
-        Stack<String> stack1 = new Stack<String>();
-        Deque<String> stack2 = new LinkedList<String>();
+        Stack<String> stack1 = new Stack<>();
+        Deque<String> stack2 = new LinkedList<>();
         int lavel = 2;
         for (int i = arr.length - 1; i >= 0; i--) {
-            if (arr[i].equals(""))
-                continue;
+            if (arr[i].equals("")) continue;
             switch (arr[i].charAt(arr[i].length() - 1)) {
                 case '+':
                 case '-':
@@ -106,7 +124,6 @@ public class calculatorDemo {
                     }
 
                     break;
-
                 default:
                     stack1.push(arr[i]);
                     break;
@@ -116,7 +133,7 @@ public class calculatorDemo {
     }
 
     public static double compute(Stack<String> s) {
-        Stack<Double> c = new Stack<Double>();
+        Stack<Double> c = new Stack<>();
         while (!s.empty()) {
             String curr = s.remove(0);
             if (curr.length() > 1) {
@@ -147,6 +164,5 @@ public class calculatorDemo {
         }
         return c.pop();
     }
-
     // TODO: 中缀转前缀，前缀转中缀，后缀转中缀，前缀转后缀，后缀转前缀
 }

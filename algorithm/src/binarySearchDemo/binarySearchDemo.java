@@ -1,6 +1,7 @@
 package binarySearchDemo;
 
 public class binarySearchDemo {
+
     public static void main(String[] args) {
         int[] nums = { 1, 2, 3, 3, 3, 4, 5, 6, 7, 8, 9 };
         int index = binarySearchFirst(nums, 3, true);
@@ -9,10 +10,9 @@ public class binarySearchDemo {
 
     /**
      * 二分查找
-     * 
+     *
      * @param nums  : 要进行搜索的数组
      * @param key   : 要寻找的数
-     * @param index : 查找的是第一次出现的位置还是最后一次出现的位置 (第一次出现：-1，第二次出现：1)
      * @return : 返回在数组中与 key 值相等的数的位置，若未找到则返回 -1
      */
     public static int binarySearch(int[] nums, int key) {
@@ -27,7 +27,11 @@ public class binarySearchDemo {
         return binarySearch(nums, key, false, true);
     }
 
-    public static int binarySearchFirst(int[] nums, int key, boolean lowToHigh) {
+    public static int binarySearchFirst(
+        int[] nums,
+        int key,
+        boolean lowToHigh
+    ) {
         return binarySearch(nums, key, true, lowToHigh);
     }
 
@@ -35,7 +39,12 @@ public class binarySearchDemo {
         return binarySearch(nums, key, false, lowToHigh);
     }
 
-    public static int binarySearch(int[] nums, int key, boolean findFirst, boolean lowToHigh) {
+    public static int binarySearch(
+        int[] nums,
+        int key,
+        boolean findFirst,
+        boolean lowToHigh
+    ) {
         // 定位start指针
         int start = 0;
         // 定位end指针

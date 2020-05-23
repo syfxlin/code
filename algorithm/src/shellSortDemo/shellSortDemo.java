@@ -3,6 +3,7 @@ package shellSortDemo;
 import java.util.Arrays;
 
 public class shellSortDemo {
+
     public static void main(String[] args) {
         int[] nums = new int[] { 9, 8, 7, 6, 5, 4, 3, 3, 3, 2, 1 };
         shellSort(nums);
