@@ -1,10 +1,10 @@
 <scheme name="Atom One Light Pro (Otstar Lin)" version="142" parent_scheme="Default">
   <option name="FONT_SCALE" value="1.0" />
   <metaInfo>
-    <property name="created">2020-07-03T12:12:35</property>
+    <property name="created">2020-07-04T12:59:34</property>
     <property name="ide">idea</property>
     <property name="ideVersion">2020.1.2.0.0</property>
-    <property name="modified">2020-07-03T12:12:43</property>
+    <property name="modified">2020-07-04T12:59:44</property>
     <property name="originalScheme">Atom One Light Pro (Otstar Lin)</property>
   </metaInfo>
   <option name="LINE_SPACING" value="1.2" />
@@ -456,7 +456,7 @@
     </option>
     <option name="DEFAULT_COMMA">
       <value>
-        <option name="FOREGROUND" value="383a42" />
+        <option name="FOREGROUND" value="4078f2" />
       </value>
     </option>
     <option name="DEFAULT_CONSTANT">
@@ -490,7 +490,7 @@
     </option>
     <option name="DEFAULT_DOT">
       <value>
-        <option name="FOREGROUND" value="383a42" />
+        <option name="FOREGROUND" value="4078f2" />
       </value>
     </option>
     <option name="DEFAULT_ENTITY">
@@ -609,7 +609,7 @@
     </option>
     <option name="DEFAULT_SEMICOLON">
       <value>
-        <option name="FOREGROUND" value="383a42" />
+        <option name="FOREGROUND" value="4078f2" />
       </value>
     </option>
     <option name="DEFAULT_STATIC_FIELD">
@@ -705,7 +705,7 @@
     </option>
     <option name="EXECUTIONPOINT_ATTRIBUTES">
       <value>
-        <option name="BACKGROUND" value="fbf0c8" />
+        <option name="BACKGROUND" value="98fb98" />
       </value>
     </option>
     <option name="FOLDED_TEXT_ATTRIBUTES">
