@@ -6,7 +6,7 @@ import { computed } from "vue";
 type useStateGetterFn = <R>(state: State) => R;
 type useStateWritableFn<R> = {
   get: (state: State, ctx?: any) => R;
-  set: (value: R) => void;
+  set: (state: State, value: R) => void;
 };
 type useActionFn = (actions: Actions) => any;
 
@@ -40,7 +40,7 @@ export function useState<R>(
   }
   return computed({
     get: ctx => key.get(state, ctx),
-    set: v => key.set(v)
+    set: v => key.set(state, v)
   });
 }
 
