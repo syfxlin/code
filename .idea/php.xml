@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/php-middleware/vendor/laminas/laminas-httphandlerrunner" />
+      <path value="$PROJECT_DIR$/php-middleware/vendor/composer" />
+      <path value="$PROJECT_DIR$/php-middleware/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/php-middleware/vendor/psr/http-server-handler" />
+      <path value="$PROJECT_DIR$/php-middleware/vendor/psr/http-server-middleware" />
+      <path value="$PROJECT_DIR$/php-middleware/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/php-middleware/vendor/laminas/laminas-zendframework-bridge" />
+      <path value="$PROJECT_DIR$/php-middleware/vendor/laminas/laminas-diactoros" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
+</project>

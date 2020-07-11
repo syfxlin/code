@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/php-middleware/middleware" isTestSource="false" packagePrefix="Middleware\" />
+      <excludeFolder url="file://$MODULE_DIR$/.history" />
+      <excludeFolder url="file://$MODULE_DIR$/php-middleware/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/php-middleware/vendor/laminas/laminas-diactoros" />
+      <excludeFolder url="file://$MODULE_DIR$/php-middleware/vendor/laminas/laminas-httphandlerrunner" />
+      <excludeFolder url="file://$MODULE_DIR$/php-middleware/vendor/laminas/laminas-zendframework-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/php-middleware/vendor/psr/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/php-middleware/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/php-middleware/vendor/psr/http-server-handler" />
+      <excludeFolder url="file://$MODULE_DIR$/php-middleware/vendor/psr/http-server-middleware" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
