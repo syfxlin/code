@@ -1,22 +1,46 @@
-import state, { State } from "@/store/state";
-import actions, { Actions } from "@/store/actions";
+import { computed, reactive, ref } from "vue";
 import { WritableComputedRef } from "@vue/reactivity";
-import { computed } from "vue";
 
-type useStateGetterFn = <R>(state: State) => R;
-type useStateWritableFn<R> = {
-  get: (state: State, ctx?: any) => R;
-  set: (state: State, value: R) => void;
+type stateGetterFn<R, S = any> = (state: S) => R;
+type stateWritableFn<R, S = any> = {
+  get: (state: S, ctx?: any) => R;
+  set: (state: S, value: R) => void;
 };
-type useActionFn = (actions: Actions) => any;
+type actionFn<R, A> = (actions: A) => R;
+type stateSetterFn<S = any> = (state: S) => void;
 
-export const useStore = (): { state: State; actions: Actions } => {
-  return { state, actions };
-};
+const stores = ref<{ [key: string]: any }>({});
 
-export function useState<R>(
-  key: string | useStateGetterFn | useStateWritableFn<R> | null = null
+export function createState<S extends object>(state: S) {
+  return reactive(state);
+}
+
+export function createStore<S extends object = any, A extends object = any>(
+  state: S,
+  actions: A,
+  name = "default"
+) {
+  const store = { state, actions };
+  stores.value[name] = store;
+  return store;
+}
+
+export function useStore(name = "default") {
+  if (stores.value[name] === undefined) {
+    throw new Error("Store not yet registered");
+  }
+  const store = stores.value[name];
+  return { state: computed(store.state), actions: store.actions };
+}
+
+export function useState<R, S = any>(
+  key: string | stateGetterFn<R, S> | stateWritableFn<R, S> | null = null,
+  name = "default"
 ): WritableComputedRef<R> {
+  if (stores.value[name] === undefined) {
+    throw new Error("Store not yet registered");
+  }
+  const state = stores.value[name].state;
   if (key === null) {
     return computed(() => (state as any) as R);
   }
@@ -44,9 +68,16 @@ export function useState<R>(
   });
 }
 
-export function useAction<A>(key: string | useActionFn | null = null): A {
+export function useAction<R, A = any>(
+  key: string | actionFn<R, A> | null = null,
+  name = "default"
+): R {
+  if (stores.value[name] === undefined) {
+    throw new Error("Store not yet registered");
+  }
+  const actions = stores.value[name].actions;
   if (key === null) {
-    return (actions as any) as A;
+    return (actions as any) as R;
   }
   if (typeof key === "string") {
     let result = actions as any;
@@ -60,4 +91,8 @@ export function useAction<A>(key: string | useActionFn | null = null): A {
     return result;
   }
   return key(actions);
+}
+
+export function setState<S>(setter: stateSetterFn<S>, name = "default") {
+  setter(useState<S, S>(null, name).value);
 }
