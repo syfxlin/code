@@ -47,30 +47,32 @@
 
 ## 设计模式
 
-- [单例模式](https://github.com/syfxlin/code/tree/master/design-pattern/Singleton) `Singleton`
-- [工厂模式](https://github.com/syfxlin/code/tree/master/design-pattern/Factory) `Factory`
-  - [简单/静态工厂模式](https://github.com/syfxlin/code/blob/master/design-pattern/Factory/SimpleFactory.php) `SimpleFactory`
-  - [工厂方法模式](https://github.com/syfxlin/code/blob/master/design-pattern/Factory/FactoryMethod.php) `FactoryMethod`
-- [建造者模式](https://github.com/syfxlin/code/tree/master/design-pattern/Builder) `Builder`
-- [门面模式](https://github.com/syfxlin/code/tree/master/design-pattern/Facade) `Facade`
-- [观察者模式](https://github.com/syfxlin/code/tree/master/design-pattern/Observer) `Observer`
-- [适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter) `Adapter`
-  - [类的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter/ClassAdapter.php)
-  - [对象的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Adapter/ObjectAdapter.php)
-- [依赖注入](https://github.com/syfxlin/code/tree/master/design-pattern/DI) `DI`
-- [控制反转](https://github.com/syfxlin/code/tree/master/design-pattern/IoC) `IoC, PSR-11`
-- [管道设计](https://github.com/syfxlin/code/tree/master/design-pattern/Pipeline) `Pipeline`
-- [装饰模式](https://github.com/syfxlin/code/tree/master/design-pattern/Decorator) `Decorator`
-- [代理模式](https://github.com/syfxlin/code/tree/master/design-pattern/Proxy) `Proxy`
-- [组合模式](https://github.com/syfxlin/code/tree/master/design-pattern/Composite) `Composite`
-- [迭代器模式](https://github.com/syfxlin/code/tree/master/design-pattern/Iterator) `Iterator`
-- [命令模式](https://github.com/syfxlin/code/tree/master/design-pattern/Command) `Command`
-- [策略模式](https://github.com/syfxlin/code/tree/master/design-pattern/Strategy) `Strategy`
-- [桥接模式](https://github.com/syfxlin/code/tree/master/design-pattern/Bridge) `Bridge`
-- [原型模式](https://github.com/syfxlin/code/tree/master/design-pattern/Prototype) `Prototype`
-- [模板模式](https://github.com/syfxlin/code/tree/master/design-pattern/Template) `Template`
-- [状态模式](https://github.com/syfxlin/code/tree/master/design-pattern/State) `State`
-- [责任链模式](https://github.com/syfxlin/code/tree/master/design-pattern/ChainOfResponsibilities) `Chain Of Responsibilities`
+> 由于 PHP 有一些局限性，无法完全的展示设计模式，比如单例的多种实现线程安全等，所以我打算用 Java 重写一下这些设计模式
+
+- [单例模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Singleton) `Singleton`
+- [工厂模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Factory) `Factory`
+  - [简单/静态工厂模式](https://github.com/syfxlin/code/blob/master/design-pattern-php/Factory/SimpleFactory.php) `SimpleFactory`
+  - [工厂方法模式](https://github.com/syfxlin/code/blob/master/design-pattern-php/Factory/FactoryMethod.php) `FactoryMethod`
+- [建造者模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Builder) `Builder`
+- [门面模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Facade) `Facade`
+- [观察者模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Observer) `Observer`
+- [适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Adapter) `Adapter`
+  - [类的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Adapter/ClassAdapter.php)
+  - [对象的适配器模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Adapter/ObjectAdapter.php)
+- [依赖注入](https://github.com/syfxlin/code/tree/master/design-pattern-php/DI) `DI`
+- [控制反转](https://github.com/syfxlin/code/tree/master/design-pattern-php/IoC) `IoC, PSR-11`
+- [管道设计](https://github.com/syfxlin/code/tree/master/design-pattern-php/Pipeline) `Pipeline`
+- [装饰模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Decorator) `Decorator`
+- [代理模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Proxy) `Proxy`
+- [组合模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Composite) `Composite`
+- [迭代器模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Iterator) `Iterator`
+- [命令模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Command) `Command`
+- [策略模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Strategy) `Strategy`
+- [桥接模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Bridge) `Bridge`
+- [原型模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Prototype) `Prototype`
+- [模板模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/Template) `Template`
+- [状态模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/State) `State`
+- [责任链模式](https://github.com/syfxlin/code/tree/master/design-pattern-php/ChainOfResponsibilities) `Chain Of Responsibilities`
 
 ## 其他
 
@@ -78,7 +80,7 @@
 - [React Store](https://github.com/syfxlin/blog-code/tree/master/react-store) `TypeScript`
 - [Vue Store](https://github.com/syfxlin/blog-code/tree/master/vue-store) `JavaScript`
 - [Vue 3 Store](https://github.com/syfxlin/code/tree/master/vue3-ts-store) `TypeScript`
-- [MVVM](https://github.com/syfxlin/code/tree/master/design-pattern/MVVM) `JavaScript, Proxy`
+- [MVVM](https://github.com/syfxlin/code/tree/master/MVVM) `JavaScript, Proxy`
 
 ## 一些乱七八糟的文件
 
