@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- scan ：开启"热更新" scanPeriod："热更新"扫描周期，默认 60 seconds(60秒)-->
+<configuration scan="true" scanPeriod="300 seconds">
+  <property
+        name="LOG_PATTERN"
+        value="%date %-5level --- [%thread] %class.%method/%line : %msg%n"
+    />
+
+  <!-- 彩色日志格式 -->
+  <property
+        name="LOG_PATTERN_GREEN"
+        value="%date %green(%-5level) --- [%thread] %cyan(%class.%method/%line) : %msg%n"
+    />
+  <property
+        name="LOG_PATTERN_YELLOW"
+        value="%date %yellow(%-5level) --- [%thread] %cyan(%class.%method/%line) : %msg%n"
+    />
+  <property
+        name="LOG_PATTERN_RED"
+        value="%date %red(%-5level) --- [%thread] %cyan(%class.%method/%line) : %msg%n"
+    />
+
+
+  <!--日志输出器. ch.qos.logback.core.ConsoleAppender : 输出到控制台-->
+  <appender name="STDOUT_DEBUG" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- 过滤器 只输出 debug 级别的日志 -->
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <!-- 只输出 debug 级别的日志 -->
+      <level>debug</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+
+    <encoder>
+      <!-- 配置日志输出格式 -->
+      <pattern>${LOG_PATTERN_GREEN}</pattern>
+      <!-- 使用的字符集 -->
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <appender name="STDOUT_INFO" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>info</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <encoder>
+      <pattern>${LOG_PATTERN_GREEN}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <appender name="STDOUT_WARN" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>warn</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <encoder>
+      <pattern>${LOG_PATTERN_YELLOW}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <appender name="STDOUT_ERROR" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>error</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <encoder>
+      <pattern>${LOG_PATTERN_RED}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <!-- 记录器 name : 包名或类名， level : 要记录的日志的起始级别， additivity : 是否追加父类的 appender -->
+  <logger name="me.ixk" level="debug" additivity="false">
+    <appender-ref ref="STDOUT_DEBUG" />
+    <appender-ref ref="STDOUT_INFO" />
+    <appender-ref ref="STDOUT_WARN" />
+    <appender-ref ref="STDOUT_ERROR" />
+  </logger>
+
+  <!-- 根记录器 -->
+  <root level="info">
+    <!-- 使用 STDOUT、ROLLING 输出记录的日志-->
+    <appender-ref ref="STDOUT_INFO" />
+    <appender-ref ref="STDOUT_WARN" />
+    <appender-ref ref="STDOUT_ERROR" />
+    <appender-ref ref="ROLLING" />
+  </root>
+</configuration>
