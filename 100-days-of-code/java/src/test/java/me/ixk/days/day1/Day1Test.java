@@ -86,7 +86,7 @@ class Day1Test {
         } catch (RejectedExecutionException e) {
             exception = e;
         } finally {
-            for (long i = 0; i < count.getCount(); i++) {
+            for (long i = 0; i <= count.getCount(); i++) {
                 count.countDown();
             }
         }
