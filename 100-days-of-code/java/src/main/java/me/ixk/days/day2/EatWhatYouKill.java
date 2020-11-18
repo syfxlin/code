@@ -112,6 +112,7 @@ public class EatWhatYouKill implements ExecutionStrategy, Runnable {
                 this.state = State.IDLE;
                 mode = Mode.EXECUTE_PRODUCE_CONSUME;
             } else {
+                log.info("Use PEC mode");
                 mode = Mode.PRODUCE_EXECUTE_CONSUME;
             }
         }
