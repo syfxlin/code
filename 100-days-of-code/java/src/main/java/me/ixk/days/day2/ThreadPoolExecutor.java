@@ -115,7 +115,7 @@ public class ThreadPoolExecutor
 
     @Override
     public boolean tryExecute(Runnable task) {
-        if (this.getSubmittedTaskCount() >= this.getMaximumPoolSize()) {
+        if (this.getSubmittedTaskCount() + 1 >= this.getMaximumPoolSize()) {
             return false;
         }
         try {
