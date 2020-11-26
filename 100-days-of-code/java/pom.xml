@@ -59,6 +59,11 @@
       <artifactId>aspectjweaver</artifactId>
       <version>1.9.6</version>
     </dependency>
+    <dependency>
+      <artifactId>cron-utils</artifactId>
+      <groupId>com.cronutils</groupId>
+      <version>9.1.3</version>
+    </dependency>
   </dependencies>
 
   <build>
