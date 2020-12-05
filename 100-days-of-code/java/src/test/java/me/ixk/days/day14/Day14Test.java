@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
  * @author Otstar Lin
  * @date 2020/12/5 下午 4:19
  */
-class Day15Test {
+class Day14Test {
 
     @Test
     void weakCache() {
