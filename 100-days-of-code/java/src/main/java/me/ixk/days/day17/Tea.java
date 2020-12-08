@@ -66,7 +66,6 @@ public class Tea {
             );
         return c1
             .thenCombine(c2, (a, b) -> null)
-            .thenCombine(c1, (a, b) -> null)
             .thenRun(
                 () -> {
                     log.info("泡茶");
