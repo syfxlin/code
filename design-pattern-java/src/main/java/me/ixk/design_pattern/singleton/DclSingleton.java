@@ -8,7 +8,11 @@ package me.ixk.design_pattern.singleton;
  * 缺点：第一次加载稍慢
  */
 public class DclSingleton {
-    private static DclSingleton instance;
+
+    /**
+     * 防止赋值步骤重排序到实例化前，导致出现并发时未实例话完成但是通过了第一层检查
+     */
+    private static volatile DclSingleton instance;
 
     private DclSingleton() {}
 
