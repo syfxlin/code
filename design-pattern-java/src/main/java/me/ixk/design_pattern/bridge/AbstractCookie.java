@@ -1,6 +1,8 @@
 package me.ixk.design_pattern.bridge;
 
 /**
+ * 事物抽象
+ *
  * @author Otstar Lin
  * @date 2020/12/27 下午 3:59
  */

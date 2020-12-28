@@ -1,6 +1,10 @@
 package me.ixk.design_pattern.bridge;
 
 /**
+ * 具体事物
+ * <p>
+ * 事物特征由外部传入，减少耦合
+ *
  * @author Otstar Lin
  * @date 2020/12/27 下午 4:01
  */

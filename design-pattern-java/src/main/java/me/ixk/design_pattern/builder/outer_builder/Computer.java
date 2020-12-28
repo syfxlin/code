@@ -1,6 +1,8 @@
 package me.ixk.design_pattern.builder.outer_builder;
 
 /**
+ * 要被建造的事物
+ *
  * @author Otstar Lin
  * @date 2020/12/23 下午 1:05
  */
